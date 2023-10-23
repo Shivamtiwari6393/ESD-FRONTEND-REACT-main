@@ -22,6 +22,8 @@ const Createstudent = () => {
   const [showNumErr, setshowNumErr] = useState(false);
   const [showEmail, setShowErrEmail] = useState(false);
   const [nameError, setNameError] = useState('');
+  const [cityError, setCityError] = useState('');
+  const [stateError, setStateError] = useState('');
 
   const navigate = useNavigate();
 
@@ -70,6 +72,34 @@ const Createstudent = () => {
 
   }
 
+  const handleCityChange = (name, value) => {
+    const valid = /^[a-zA-Z ]{0,30}$/.test(value);
+    if (valid) {
+      setCityError('');
+      setStudentData({ ...studentData, [name]: value });
+    } else {
+      setCityError('Only alphabetic characters are allowed');
+    }
+  };
+
+  const handleStateChange = (name, value) => {
+    const valid = /^[a-zA-Z ]{0,30}$/.test(value);
+    if (valid) {
+      setStateError('');
+      setStudentData({ ...studentData, [name]: value });
+    } else {
+      setStateError('Only alphabetic characters are allowed');
+    }
+  };
+
+  const handlePinCodeChange = (name, value) => {
+    // Check if the entered value has a length of 6 or less
+    if (value.length <= 6) {
+      setStudentData({ ...studentData, [name]: value });
+    } else {
+      alert("PinCode should not be more than 6 characters.");
+    }
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -231,10 +261,15 @@ const Createstudent = () => {
                               type="text"
                               name="city"
                               value={studentData.city}
-                              onChange={handleChange}
+                              onChange={(e) => handleCityChange(e.target.name, e.target.value)}
                               className="form-control"
                               required
                             />
+                            {cityError && (
+                              <small className="form-text text-danger">
+                                {cityError}
+                              </small>
+                            )}
                           </div>
                         </div>
                         <div className="d-flex flex-row align-items-center mb-4">
@@ -247,9 +282,11 @@ const Createstudent = () => {
                               type="number"
                               name="pinCode"
                               value={studentData.pinCode}
-                              onChange={handleChange}
+                              onChange={(e) => handlePinCodeChange(e.target.name, e.target.value)}
+
                               className="form-control"
                               required
+                              maxLength="6"
                             />
                           </div>
                         </div>
@@ -264,10 +301,15 @@ const Createstudent = () => {
                               type="text"
                               name="state"
                               value={studentData.state}
-                              onChange={handleChange}
+                              onChange={(e) => handleStateChange(e.target.name, e.target.value)}
                               className="form-control"
                               required
                             />
+                            {stateError && (
+                              <small className="form-text text-danger">
+                                {stateError}
+                              </small>
+                            )}
                           </div>
                         </div>
 
