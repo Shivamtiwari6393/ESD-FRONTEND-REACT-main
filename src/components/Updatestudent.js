@@ -19,6 +19,7 @@ const Updatestudent = () => {
   const [pinCode, setPincode] = useState(location.state.pinCode);
   const [state, setState] = useState(location.state.state);
   const [gender, setGender] = useState(location.state.gender);
+  const [nameError, setNameError] = useState('');
 
   const navigate = useNavigate();
 
@@ -31,6 +32,16 @@ const Updatestudent = () => {
     } else if (onlyNumber && num.length <= 10 && num[0] !== '0') {
       setShowErrNum(false);
       setPhoneNumber(num);
+    }
+  };
+
+  const handleNameChange = (e) => {
+    const name = e.target.value;
+    if (/[^a-zA-Z ]/.test(name)) {
+      setNameError('Only alphabetic characters are allowed');
+    } else {
+      setNameError('');
+      setStudentName(name);
     }
   };
   const handleUpdate = (e) => {
@@ -92,9 +103,14 @@ const Updatestudent = () => {
                               type="text"
                               name="studentname"
                               value={studentname}
-                              onChange={(e) => setStudentName(e.target.value)}
+                              onInput={handleNameChange}
                               className="form-control"
                             />
+                            {nameError && (
+                              <small className="form-text text-danger">
+                                {nameError}
+                              </small>
+                            )}
                           </div>
                         </div>
                         <div className="d-flex flex-row align-items-center mb-2">

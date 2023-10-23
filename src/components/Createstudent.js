@@ -19,42 +19,44 @@ const Createstudent = () => {
     gender: "",
   });
   const [showErrors, setShowErrors] = useState(false);
-  const [showNumErr,setshowNumErr]= useState(false);
-  const [showEmail,setShowErrEmail]= useState(false);
+  const [showNumErr, setshowNumErr] = useState(false);
+  const [showEmail, setShowErrEmail] = useState(false);
+  const [nameError, setNameError] = useState('');
 
   const navigate = useNavigate();
 
-  const handleEmailChange = (name,value) => {    
+  const handleEmailChange = (name, value) => {
     const valid = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(value)
 
     if (valid) {
 
-        setShowErrEmail(false)
-        setStudentData({ ...studentData, [name]: value });
+      setShowErrEmail(false)
+      setStudentData({ ...studentData, [name]: value });
     } else {
-        setShowErrEmail(true)
-        setStudentData({ ...studentData, [name]: value });
+      setShowErrEmail(true)
+      setStudentData({ ...studentData, [name]: value });
 
     }
     if (value.length === 0) {
-        setShowErrEmail(false)
+      setShowErrEmail(false)
     }
     // console.log(valid)
-}
-
-  
-
-  const handleNameChange = (name,value) => {
-    const valid = /^[a-zA-Z ]{0,30}$/.test(value)
-    if (valid) {           
-      setShowErrors(false)
-      setStudentData({ ...studentData, [name]: value });
-    } else {
-      setShowErrors(true)
-    }
   }
-  
-  const handleNumChange = (name,value) => {
+
+
+  const handleNameChange = (name, value) => {
+    const valid = /^[a-zA-Z ]{0,30}$/.test(value);
+    if (valid) {
+      setShowErrors(false);
+      setStudentData({ ...studentData, [name]: value });
+      setNameError('');
+    } else {
+      setShowErrors(true);
+      setNameError('Only alphabetic characters are allowed');
+    }
+  };
+
+  const handleNumChange = (name, value) => {
 
     const numisValid = /^[1-9][0-9]{9}$/.test(value)
     const onlyNumber = /^[0-9]*$/.test(value)
@@ -63,21 +65,21 @@ const Createstudent = () => {
       setshowNumErr(true)
     } else if (onlyNumber && value.length <= 10 && value[0] !== '0') {
       setshowNumErr(false)
-        setStudentData({ ...studentData, [name]: value });
+      setStudentData({ ...studentData, [name]: value });
     }
 
-}
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    switch(name){
+    switch (name) {
       case "studentName":
-        handleNameChange(name,value)
+        handleNameChange(name, value)
       case "phoneNumber":
-        handleNumChange(name,value)
+        handleNumChange(name, value)
       case "email":
-        handleEmailChange(name,value)
+        handleEmailChange(name, value)
     }
   };
 
@@ -134,11 +136,16 @@ const Createstudent = () => {
                               type="text"
                               name="studentName"
                               value={studentData.studentName}
-                              onChange={handleChange}
+                              onChange={(e) => handleNameChange(e.target.name, e.target.value)}
                               className="form-control"
                               required
                             />
-                            {showErrors && <small className="form-text text-danger">Number should be not more than 10 digits</small>}
+                            {showErrors && (
+                              <small className="form-text text-danger">
+                                {nameError}
+                              </small>
+                            )}
+
                           </div>
                         </div>
 
