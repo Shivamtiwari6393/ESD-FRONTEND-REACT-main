@@ -19,66 +19,12 @@ const Createstudent = () => {
     gender: "",
   });
   const [showErrors, setShowErrors] = useState(false);
-  const [showNumErr,setshowNumErr]= useState(false);
-  const [showEmail,setShowErrEmail]= useState(false);
 
   const navigate = useNavigate();
 
-  const handleEmailChange = (name,value) => {    
-    const valid = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(value)
-
-    if (valid) {
-
-        setShowErrEmail(false)
-        setStudentData({ ...studentData, [name]: value });
-    } else {
-        setShowErrEmail(true)
-        setStudentData({ ...studentData, [name]: value });
-
-    }
-    if (value.length === 0) {
-        setShowErrEmail(false)
-    }
-    // console.log(valid)
-}
-
-  
-
-  const handleNameChange = (name,value) => {
-    const valid = /^[a-zA-Z ]{0,30}$/.test(value)
-    if (valid) {           
-      setShowErrors(false)
-      setStudentData({ ...studentData, [name]: value });
-    } else {
-      setShowErrors(true)
-    }
-  }
-  
-  const handleNumChange = (name,value) => {
-
-    const numisValid = /^[1-9][0-9]{9}$/.test(value)
-    const onlyNumber = /^[0-9]*$/.test(value)
-    // console.log(numisValid)
-    if (!numisValid && !onlyNumber) {
-      setshowNumErr(true)
-    } else if (onlyNumber && value.length <= 10 && value[0] !== '0') {
-      setshowNumErr(false)
-        setStudentData({ ...studentData, [name]: value });
-    }
-
-}
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    switch(name){
-      case "studentName":
-        handleNameChange(name,value)
-      case "phoneNumber":
-        handleNumChange(name,value)
-      case "email":
-        handleEmailChange(name,value)
-    }
+    setStudentData({ ...studentData, [name]: value });
   };
 
   const handleSubmit = (e) => {
@@ -138,7 +84,6 @@ const Createstudent = () => {
                               className="form-control"
                               required
                             />
-                            {showErrors && <small className="form-text text-danger">Number should be not more than 10 digits</small>}
                           </div>
                         </div>
 
@@ -149,14 +94,13 @@ const Createstudent = () => {
                               Phone Number
                             </label>
                             <input
-                              type="text"
+                              type="number"
                               name="phoneNumber"
                               value={studentData.phoneNumber}
                               onChange={handleChange}
                               className="form-control"
                               required
                             />
-                            {showNumErr && <small className="form-text text-danger">Number should be not more than 10 digits</small>}
                           </div>
                         </div>
                         <div className="d-flex flex-row align-items-center mb-4">
@@ -210,7 +154,6 @@ const Createstudent = () => {
                               className="form-control"
                               required
                             />
-                            {showEmail && <small className="form-text text-danger">Number should be not more than 10 digits</small>}
                           </div>
                         </div>
 
